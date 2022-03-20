@@ -3,10 +3,29 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {TestContainer} from "./containers/TestContainer";
+import {Button} from "@mui/material";
+import {Link} from "react-router-dom";
+
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+      <BrowserRouter>
+        <Routes>
+            <Route path="/" element={(<App />)}/>
+            <Route path="game" element={(<TestContainer/>)}/>
+            <Route path="*" element={
+                <main style={{ padding: "1rem" }}>
+                    <p>Invalid path!</p>
+                    <Link to="/">
+                        <Button>Go Home</Button>
+                    </Link>
+                </main>
+            }
+            />
+        </Routes>
+      </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );
