@@ -14,6 +14,7 @@ export const TestContainer = () => {
     const [remainingNoGo, setRemainingNoGo] = useState(2) //66
     const options = [GO, NOGO]
     const timeoutRef = useRef()
+    const startTime = useRef()
 
     const remainingRounds = remainingGo + remainingNoGo
     const isGameOver = remainingRounds === 0
@@ -30,13 +31,14 @@ export const TestContainer = () => {
 
     const handleInput = (key) => {
         if (key.code === keyCode){
-            handleChange(false)
+            handleChange(false, startTime.current)
         }
     }
 
     useEventListener('keydown', handleInput)
 
-    const handleChange = (timedOut) => {
+    const handleChange = (timedOut, startTime) => {
+        const endTime = Date.now()
         if (!timedOut){
             clearTimeout(timeoutRef.current)
         }
@@ -45,7 +47,8 @@ export const TestContainer = () => {
         setResults(prevState => {
             return [...prevState, [
                 option,
-                success ? 'Success' : "Failure"
+                success ? 'Success' : "Failure",
+                timedOut ? "-" : `=""${((Math.abs(endTime - startTime)) / 1000)}""`
             ]]
         })
 
@@ -57,13 +60,13 @@ export const TestContainer = () => {
         }
     }
 
-
-    const [results, setResults] = useState([["Type", "Result"]])
+    const [results, setResults] = useState([["Type", "Result", "Reaction Time"]])
 
     useEffect(() => {
         if (!isGameOver){
+            startTime.current = Date.now()
             timeoutRef.current = setTimeout(() => {
-                handleChange(true)
+                handleChange(true, startTime)
             }, 2000)
         }
     }, [remainingGo, remainingNoGo, isGameOver])
@@ -80,7 +83,7 @@ export const TestContainer = () => {
         <Card style={{padding: "8px"}}>
             <Stack spacing={3}>
                 <Typography textAlign={"center"} variant="h2">
-                    Game over, you can view and download the results below
+                    Game over, you will soon be prompted to download the results
                 </Typography>
 
                 <CSVDownload data={results}>
@@ -96,3 +99,9 @@ export const TestContainer = () => {
         </Stack>
     )
 }
+
+// ~TODO: Remove countdown
+// Count Reaction time se dekata DONE
+// Na katalavaineis to GO kai No GO otan allazoun
+// Mauro background kai se perigramma ta Go kai No Go
+// 220 reps

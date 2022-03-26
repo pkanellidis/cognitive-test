@@ -1,25 +1,39 @@
 import './App.css';
-import {Button, Card, Stack, Typography} from "@mui/material";
-import {Link} from "react-router-dom";
+import {Button, createTheme, CssBaseline, ThemeProvider} from "@mui/material";
+import {BrowserRouter, Link, Route, Routes} from "react-router-dom";
+import {TestContainer} from "./containers/TestContainer";
+import React from "react";
+import {Home} from "./containers/Home";
+
+const darkTheme = createTheme({
+    palette: {
+        mode: 'dark',
+    },
+});
 
 function App() {
+
   return (
-    <div className="App">
-      <Card style={{padding: "8px"}}>
-          <Stack spacing={3}>
-              <Typography variant={"h3"}>
-                  Welcome to our Impulsiveness Test
-              </Typography>
-              <Typography variant={"h4"}>
-                  You can take the test by clicking the button below, at the
-                  end of the test the results will be available
-              </Typography>
-              <Link to="/game" style={{textDecoration: "none"}} >
-                  <Button variant="contained">Start Test</Button>
-              </Link>
-          </Stack>
-      </Card>
-    </div>
+    <ThemeProvider theme={darkTheme}>
+        <CssBaseline />
+        <div className="App">
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={(<Home />)}/>
+                    <Route path="game" element={(<TestContainer/>)}/>
+                    <Route path="*" element={
+                        <main style={{ padding: "1rem" }}>
+                            <p>Invalid path!</p>
+                            <Link to="/">
+                                <Button>Go Home</Button>
+                            </Link>
+                        </main>
+                    }
+                    />
+                </Routes>
+            </BrowserRouter>
+        </div>
+    </ThemeProvider>
   );
 }
 
