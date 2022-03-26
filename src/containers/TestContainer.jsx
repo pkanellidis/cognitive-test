@@ -10,8 +10,8 @@ const NOGO = 'NOGO'
 const keyCode = 'Space'
 
 export const TestContainer = () => {
-    const [remainingGo, setRemainingGo] = useState(3) //154
-    const [remainingNoGo, setRemainingNoGo] = useState(2) //66
+    const [remainingGo, setRemainingGo] = useState(154) //154
+    const [remainingNoGo, setRemainingNoGo] = useState(66) //66
     const options = [GO, NOGO]
     const timeoutRef = useRef()
     const startTime = useRef()
@@ -39,16 +39,30 @@ export const TestContainer = () => {
 
     const handleChange = (timedOut, startTime) => {
         const endTime = Date.now()
-        if (!timedOut){
-            clearTimeout(timeoutRef.current)
-        }
+        clearTimeout(timeoutRef.current)
 
-        const success = ((option === NOGO) && timedOut) || ((option === GO) && !timedOut)
         setResults(prevState => {
             return [...prevState, [
                 option,
-                success ? 'Success' : "Failure",
+                option === GO ? 'Success' : "Failure",
                 timedOut ? "-" : `=""${((Math.abs(endTime - startTime)) / 1000)}""`
+            ]]
+        })
+
+        if (option === GO){
+            setRemainingGo((prevGo) => prevGo - 1)
+        }
+        else {
+            setRemainingNoGo((prevNoGo) => prevNoGo - 1)
+        }
+    }
+
+    const handleTimeout = (option) => {
+        setResults(prevState => {
+            return [...prevState, [
+                option,
+                option === NOGO ? 'Success' : "Failure",
+                "-"
             ]]
         })
 
@@ -66,16 +80,20 @@ export const TestContainer = () => {
         if (!isGameOver){
             startTime.current = Date.now()
             timeoutRef.current = setTimeout(() => {
-                handleChange(true, startTime)
+                handleTimeout(option)
             }, 2000)
         }
-    }, [remainingGo, remainingNoGo, isGameOver])
+
+        return () => {
+            clearTimeout(timeoutRef.current)
+        }
+    }, [remainingGo, remainingNoGo, isGameOver, option])
 
     const gameRound = (
         <Card style={{padding: "8px"}}>
             <Typography textAlign={"center"} variant="h2">Remaining Rounds {remainingRounds}</Typography>
             <Divider/>
-            {option === GO ? (<Go/>) : (<NoGo/>)}
+            {option === GO ? (<Go key={remainingRounds}/>) : (<NoGo key={remainingRounds}/>)}
         </Card>
     )
 
@@ -100,8 +118,4 @@ export const TestContainer = () => {
     )
 }
 
-// ~TODO: Remove countdown
-// Count Reaction time se dekata DONE
-// Na katalavaineis to GO kai No GO otan allazoun
-// Mauro background kai se perigramma ta Go kai No Go
-// 220 reps
+// ~TODO: Remove countdownFix

@@ -20,18 +20,18 @@ export const NoGo = (props) => {
     })
 
     return (
-        <Stack>
-            <animated.div style={styles}>
-                <Typography textAlign="center"
-                            variant="h1"
-                            component="h1"
-                            style={
-                                {backgroundColor: red.A700}
-                            }
-                            color={"white"}>
-                    No Go
-                </Typography>
-            </animated.div>
-        </Stack>
+        <animated.div style={styles}>
+            <Stack>
+                    <Typography textAlign="center"
+                                variant="h1"
+                                component="h1"
+                                style={
+                                    {backgroundColor: red.A700}
+                                }
+                                color={"white"}>
+                        No Go
+                    </Typography>
+            </Stack>
+        </animated.div>
     )
 }
