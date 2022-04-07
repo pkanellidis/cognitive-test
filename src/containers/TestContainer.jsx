@@ -8,26 +8,33 @@ import CSVDownload from "react-csv/src/components/Download";
 const GO = 'GO'
 const NOGO = 'NOGO'
 const keyCode = 'Space'
+// const roundOptions = ["GO","NOGO","GO","GO","GO","NOGO","NOGO","GO","GO",
+//     "NOGO","GO","GO","NOGO","GO","GO","GO","GO","GO","GO","GO","GO","GO",
+//     "GO","NOGO","GO","NOGO","GO","GO","GO","GO","GO","GO","GO","NOGO","GO",
+//     "GO","GO","GO","GO","NOGO","NOGO","GO","GO","GO","GO","NOGO","GO","GO",
+//     "NOGO","NOGO","GO","GO","NOGO","GO","NOGO","NOGO","GO","GO","GO","GO",
+//     "GO","GO","GO","GO","NOGO","NOGO","GO","GO","GO","GO","GO","GO","GO","NOGO",
+//     "NOGO","NOGO","GO","GO","GO","GO","NOGO","GO","GO","GO","NOGO","GO","GO","GO",
+//     "GO","NOGO","NOGO","GO","GO","NOGO","GO","GO","GO","GO","GO","GO","GO","GO","NOGO",
+//     "NOGO","GO","GO","GO","GO","GO","GO","GO","GO","NOGO","GO","NOGO","GO","GO","NOGO",
+//     "NOGO","GO","GO","GO","NOGO","GO","GO","GO","GO","GO","GO","GO","GO","GO","GO","GO",
+//     "NOGO","GO","NOGO","GO","GO","NOGO","GO","GO","NOGO","GO","GO","GO","GO","NOGO","GO",
+//     "NOGO","GO","GO","GO","NOGO","GO","GO","GO","GO","GO","GO","NOGO","NOGO","GO","GO","GO",
+//     "GO","GO","GO","GO","NOGO","GO","GO","NOGO","GO","NOGO","GO","GO","GO","GO","GO","NOGO",
+//     "GO","GO","NOGO","GO","GO","GO","GO","GO","NOGO","GO","GO","NOGO","GO","GO","GO","NOGO",
+//     "GO","GO","GO","NOGO","GO","GO","GO","GO","GO","NOGO","NOGO","GO","GO","GO","GO","GO","GO",
+//     "GO","GO","GO","GO","NOGO","NOGO"]
+
+const roundOptions = ["GO", "NOGO", "GO"]
 
 export const TestContainer = () => {
-    const [remainingGo, setRemainingGo] = useState(154) //154
-    const [remainingNoGo, setRemainingNoGo] = useState(66) //66
-    const options = [GO, NOGO]
+    const [currentRound, setCurrentRound] = useState(1)
     const timeoutRef = useRef()
     const startTime = useRef()
 
-    const remainingRounds = remainingGo + remainingNoGo
-    const isGameOver = remainingRounds === 0
+    const isGameOver = currentRound === roundOptions.length + 1
 
-    let randomIndex = Math.floor(Math.random() * options.length);
-    if (remainingGo === 0 && remainingNoGo > 0){
-        randomIndex = 1
-    }
-    else if (remainingGo > 0 && remainingNoGo === 0) {
-        randomIndex = 0
-    }
-
-    const option = options[randomIndex]
+    const option = roundOptions[currentRound - 1]
 
     const handleInput = (key) => {
         if (key.code === keyCode){
@@ -38,6 +45,9 @@ export const TestContainer = () => {
     useEventListener('keydown', handleInput)
 
     const handleChange = (timedOut, startTime) => {
+        if (isGameOver) {
+            return
+        }
         const endTime = Date.now()
         clearTimeout(timeoutRef.current)
 
@@ -49,12 +59,7 @@ export const TestContainer = () => {
             ]]
         })
 
-        if (option === GO){
-            setRemainingGo((prevGo) => prevGo - 1)
-        }
-        else {
-            setRemainingNoGo((prevNoGo) => prevNoGo - 1)
-        }
+        setCurrentRound((prevRound) => prevRound + 1)
     }
 
     const handleTimeout = (option) => {
@@ -66,12 +71,8 @@ export const TestContainer = () => {
             ]]
         })
 
-        if (option === GO){
-            setRemainingGo((prevGo) => prevGo - 1)
-        }
-        else {
-            setRemainingNoGo((prevNoGo) => prevNoGo - 1)
-        }
+        setCurrentRound((prevRound) => prevRound + 1)
+
     }
 
     const [results, setResults] = useState([["Type", "Result", "Reaction Time"]])
@@ -87,13 +88,13 @@ export const TestContainer = () => {
         return () => {
             clearTimeout(timeoutRef.current)
         }
-    }, [remainingGo, remainingNoGo, isGameOver, option])
+    }, [currentRound, isGameOver, option])
 
     const gameRound = (
         <Card style={{padding: "8px"}}>
-            <Typography textAlign={"center"} variant="h2">Remaining Rounds {remainingRounds}</Typography>
-            <Divider/>
-            {option === GO ? (<Go key={remainingRounds}/>) : (<NoGo key={remainingRounds}/>)}
+            <br/>
+            {option === GO ? (<Go key={currentRound}/>) : (<NoGo key={currentRound}/>)}
+            <br/>
         </Card>
     )
 
@@ -112,8 +113,31 @@ export const TestContainer = () => {
     )
 
     return (
-        <Stack>
+        <Stack
+            direction="column"
+            justifyContent="space-between"
+            alignItems="stretch"
+            spacing={3}
+        >
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
             {isGameOver ? gameOver : gameRound}
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
         </Stack>
     )
 }
