@@ -8,26 +8,8 @@ import CSVDownload from "react-csv/src/components/Download";
 const GO = 'GO'
 const NOGO = 'NOGO'
 const keyCode = 'Space'
-// const roundOptions = ["GO","NOGO","GO","GO","GO","NOGO","NOGO","GO","GO",
-//     "NOGO","GO","GO","NOGO","GO","GO","GO","GO","GO","GO","GO","GO","GO",
-//     "GO","NOGO","GO","NOGO","GO","GO","GO","GO","GO","GO","GO","NOGO","GO",
-//     "GO","GO","GO","GO","NOGO","NOGO","GO","GO","GO","GO","NOGO","GO","GO",
-//     "NOGO","NOGO","GO","GO","NOGO","GO","NOGO","NOGO","GO","GO","GO","GO",
-//     "GO","GO","GO","GO","NOGO","NOGO","GO","GO","GO","GO","GO","GO","GO","NOGO",
-//     "NOGO","NOGO","GO","GO","GO","GO","NOGO","GO","GO","GO","NOGO","GO","GO","GO",
-//     "GO","NOGO","NOGO","GO","GO","NOGO","GO","GO","GO","GO","GO","GO","GO","GO","NOGO",
-//     "NOGO","GO","GO","GO","GO","GO","GO","GO","GO","NOGO","GO","NOGO","GO","GO","NOGO",
-//     "NOGO","GO","GO","GO","NOGO","GO","GO","GO","GO","GO","GO","GO","GO","GO","GO","GO",
-//     "NOGO","GO","NOGO","GO","GO","NOGO","GO","GO","NOGO","GO","GO","GO","GO","NOGO","GO",
-//     "NOGO","GO","GO","GO","NOGO","GO","GO","GO","GO","GO","GO","NOGO","NOGO","GO","GO","GO",
-//     "GO","GO","GO","GO","NOGO","GO","GO","NOGO","GO","NOGO","GO","GO","GO","GO","GO","NOGO",
-//     "GO","GO","NOGO","GO","GO","GO","GO","GO","NOGO","GO","GO","NOGO","GO","GO","GO","NOGO",
-//     "GO","GO","GO","NOGO","GO","GO","GO","GO","GO","NOGO","NOGO","GO","GO","GO","GO","GO","GO",
-//     "GO","GO","GO","GO","NOGO","NOGO"]
 
-const roundOptions = ["GO", "NOGO", "GO"]
-
-export const TestContainer = () => {
+export const TestContainer = ({roundOptions}) => {
     const [currentRound, setCurrentRound] = useState(1)
     const timeoutRef = useRef()
     const startTime = useRef()

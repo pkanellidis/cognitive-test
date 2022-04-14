@@ -26,6 +26,9 @@ export const Home = (props) => {
                 <Link to="/game" style={{textDecoration: "none"}} >
                     <Button variant="contained">Start Test</Button>
                 </Link>
+                <Link to="/demo" style={{textDecoration: "none"}} >
+                    <Button variant="contained">Start Demo</Button>
+                </Link>
             </Stack>
         </Paper>
     )
